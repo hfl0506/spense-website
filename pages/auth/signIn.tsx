@@ -13,16 +13,19 @@ const SignIn: NextPage<SignInProps> = ({}): JSX.Element => {
   const handleLogin: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    console.log(username.current?.value);
-    console.log(password.current?.value);
-
     const res = await signIn("credentials", {
       username: username.current?.value,
       password: password.current?.value,
-      redirect: true,
+      redirect: false,
     });
 
-    if (res?.ok) return router.replace("/");
+    if (res?.ok) {
+      router.push("/");
+    }
+
+    if (res?.error) {
+      throw new Error("login failed");
+    }
   };
   return (
     <div className="flex flex-col w-full h-screen justify-center items-center bg-slate-100">

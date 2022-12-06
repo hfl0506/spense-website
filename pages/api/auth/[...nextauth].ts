@@ -8,22 +8,21 @@ const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {},
-      authorize(credentials) {
+      async authorize(credentials) {
         const { username, password } = credentials as {
           username: string;
           password: string;
         };
 
         if (
-          !username ||
-          !password ||
           username !== process.env.AUTH_USER ||
           password !== process.env.AUTH_PASS
-        )
+        ) {
           throw new Error("invalid credentials");
+        }
 
         return {
-          id: "1",
+          id: Math.random().toString(),
           name: username,
           role: "admin",
         };
@@ -31,7 +30,7 @@ const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: "/auth/signin",
+    signIn: "/auth/signIn",
   },
   callbacks: {
     jwt(params) {
